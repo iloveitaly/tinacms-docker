@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # TinaCMS Application
+  tinacms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tinacms-app
+    ports:
+      - "3000:3000"
+    environment:
+      # Application mode
+      - NODE_ENV=production
+      - TINA_PUBLIC_IS_LOCAL=false
+
+      # MongoDB connection
+      - MONGODB_URI=mongodb://mongodb:27017/tinacms
+
+      # GitHub configuration
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPO=${GITHUB_REPO}
+      - GITHUB_BRANCH=${GITHUB_BRANCH:-main}
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
+
+      # NextAuth configuration
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - tinacms-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7
+    container_name: tinacms-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+      - mongodb-config:/data/configdb
+    environment:
+      - MONGO_INITDB_DATABASE=tinacms
+    restart: unless-stopped
+    networks:
+      - tinacms-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  mongodb-data:
+    driver: local
+  mongodb-config:
+    driver: local
+
+networks:
+  tinacms-network:
+    driver: bridge
