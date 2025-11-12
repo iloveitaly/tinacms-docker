@@ -7,7 +7,7 @@ A production-ready starter template for running TinaCMS with Docker, MongoDB, an
 - ✅ **Docker-Ready**: Complete Docker setup with docker-compose
 - ✅ **MongoDB**: Self-hosted database adapter
 - ✅ **GitHub Integration**: Git-backed content storage
-- ✅ **NextAuth.js**: Secure authentication
+- ✅ **HTTP Basic Auth**: Simple, secure authentication
 - ✅ **Next.js**: Modern React framework with SSR
 - ✅ **TypeScript**: Fully typed codebase
 - ✅ **Production-Ready**: Optimized Docker build with health checks
@@ -78,9 +78,9 @@ GITHUB_OWNER=your-username
 GITHUB_REPO=your-repo-name
 GITHUB_BRANCH=main
 
-# NextAuth Secret (generate with: openssl rand -hex 32)
-NEXTAUTH_SECRET=your-random-32-char-secret
-NEXTAUTH_URL=http://localhost:3000
+# HTTP Basic Auth credentials
+TINA_ADMIN_USERNAME=admin
+TINA_ADMIN_PASSWORD=your-secure-password
 
 # MongoDB (uses docker-compose MongoDB by default)
 MONGODB_URI=mongodb://mongodb:27017/tinacms
@@ -330,7 +330,8 @@ pnpm exec tailwindcss init -p
 | `GITHUB_PERSONAL_ACCESS_TOKEN` | GitHub PAT with repo scope | `ghp_xxxxx...` |
 | `GITHUB_OWNER` | GitHub username/org | `your-username` |
 | `GITHUB_REPO` | Repository name | `my-content` |
-| `NEXTAUTH_SECRET` | Random secret for auth | Generated with openssl |
+| `TINA_ADMIN_USERNAME` | Admin username | `admin` |
+| `TINA_ADMIN_PASSWORD` | Admin password | Strong password |
 | `MONGODB_URI` | MongoDB connection string | `mongodb://mongodb:27017/tinacms` |
 
 ### Optional
@@ -338,7 +339,6 @@ pnpm exec tailwindcss init -p
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `GITHUB_BRANCH` | Git branch to use | `main` |
-| `NEXTAUTH_URL` | Public URL | `http://localhost:3000` |
 | `TINA_PUBLIC_IS_LOCAL` | Local development mode | `false` |
 | `NODE_ENV` | Node environment | `production` |
 
@@ -400,9 +400,9 @@ ports:
 
 ```bash
 # In production .env
-NEXTAUTH_URL=https://yourdomain.com
 TINA_PUBLIC_IS_LOCAL=false
-NEXTAUTH_SECRET=strong-random-production-secret
+TINA_ADMIN_USERNAME=admin
+TINA_ADMIN_PASSWORD=strong-random-production-password
 ```
 
 2. **Build and Deploy**:

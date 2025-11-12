@@ -56,30 +56,16 @@ GITHUB_OWNER=your-github-username
 GITHUB_REPO=your-repo-name
 GITHUB_BRANCH=main
 
-# Generate a random secret:
-# Run this command: openssl rand -hex 32
-# Then paste the output here:
-NEXTAUTH_SECRET=paste-your-generated-secret-here
+# Set your admin credentials:
+TINA_ADMIN_USERNAME=admin
+TINA_ADMIN_PASSWORD=your-secure-password-here
 
 # These can stay as-is for local testing:
-NEXTAUTH_URL=http://localhost:3000
 MONGODB_URI=mongodb://mongodb:27017/tinacms
 TINA_PUBLIC_IS_LOCAL=false
 ```
 
-#### Generate NEXTAUTH_SECRET
-
-On Mac/Linux:
-```bash
-openssl rand -hex 32
-```
-
-On Windows (PowerShell):
-```powershell
--join ((48..57) + (97..102) | Get-Random -Count 32 | % {[char]$_})
-```
-
-Copy the output and paste it as `NEXTAUTH_SECRET` in your `.env` file.
+**Important**: Choose a strong password for `TINA_ADMIN_PASSWORD` for production use!
 
 ### 5. Initialize Git Repository
 
@@ -131,12 +117,11 @@ Open your browser to:
 
 1. Go to http://localhost:3000/admin
 2. You'll see a login screen
-3. Click "Create an account" (first time only)
-4. Enter:
-   - **Email**: your-email@example.com
-   - **Password**: (create a strong password)
-5. Click "Sign Up"
-6. You're now logged into the CMS!
+3. Enter your credentials:
+   - **Username**: `admin` (or what you set in TINA_ADMIN_USERNAME)
+   - **Password**: (what you set in TINA_ADMIN_PASSWORD)
+4. Click "Login"
+5. You're now logged into the CMS!
 
 ### 9. Create Your First Content
 

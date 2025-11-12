@@ -34,7 +34,8 @@ cat > .env << 'EOF'
 GITHUB_PERSONAL_ACCESS_TOKEN=your_token_here
 GITHUB_OWNER=your-username
 GITHUB_REPO=your-repo
-NEXTAUTH_SECRET=$(openssl rand -hex 32)
+TINA_ADMIN_USERNAME=admin
+TINA_ADMIN_PASSWORD=your-secure-password
 EOF
 
 # 4. Build and run
@@ -273,7 +274,7 @@ TinaCMS is an open-source, Git-backed headless CMS that provides:
 Before going live, ensure you have:
 
 ### Security
-- [ ] Strong NEXTAUTH_SECRET generated
+- [ ] Strong TINA_ADMIN_PASSWORD set
 - [ ] HTTPS/SSL configured
 - [ ] Firewall rules set
 - [ ] Non-root user in containers
