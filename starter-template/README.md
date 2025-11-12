@@ -37,7 +37,8 @@ A production-ready starter template for running TinaCMS with Docker, MongoDB, an
 
 ### Optional
 
-- **Node.js 18+**: For local development without Docker
+- **Node.js 22 LTS**: For local development without Docker
+- **pnpm**: Latest package manager ([Install](https://pnpm.io/installation))
 - **MongoDB Compass**: For database inspection
 
 ## Quick Start
@@ -118,10 +119,10 @@ For faster development without Docker:
 cp .env.local.example .env.local
 
 # 2. Install dependencies
-npm install
+pnpm install
 
 # 3. Run in local mode (no MongoDB/GitHub required)
-npm run dev
+pnpm run dev
 
 # Visit http://localhost:3000
 ```
@@ -316,8 +317,8 @@ export default defineConfig({
 Edit `styles/globals.css` or add Tailwind CSS:
 
 ```bash
-npm install tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+pnpm add tailwindcss postcss autoprefixer
+pnpm exec tailwindcss init -p
 ```
 
 ## Environment Variables
@@ -348,8 +349,9 @@ npx tailwindcss init -p
 **Solution**: Git is included in the Dockerfile. If you modified it, ensure:
 
 ```dockerfile
-FROM node:18-alpine AS base
+FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat git
+RUN corepack enable && corepack prepare pnpm@latest --activate
 ```
 
 ### Problem: MongoDB connection refused

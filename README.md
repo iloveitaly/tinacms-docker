@@ -23,7 +23,7 @@ Get up and running in 5 minutes:
 
 ```bash
 # 1. Create TinaCMS project
-npx create-tina-app@latest my-tina-app
+pnpm create tina-app@latest my-tina-app
 cd my-tina-app
 
 # 2. Create Dockerfile and docker-compose.yml
@@ -135,7 +135,8 @@ Choose your architecture based on your needs:
 
 - **Docker**: 20.10+ ([Install](https://docs.docker.com/get-docker/))
 - **Docker Compose**: 2.0+ ([Install](https://docs.docker.com/compose/install/))
-- **Node.js**: 18+ ([Install](https://nodejs.org/))
+- **Node.js**: 22 LTS ([Install](https://nodejs.org/))
+- **pnpm**: Latest ([Install](https://pnpm.io/installation))
 - **GitHub Account**: For content storage
 - **GitHub Personal Access Token**: With `repo` scope ([Generate](https://github.com/settings/tokens))
 

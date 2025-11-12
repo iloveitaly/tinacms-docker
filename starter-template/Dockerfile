@@ -1,21 +1,23 @@
 # TinaCMS Docker Build
 # Multi-stage build for optimized image size
 
-# Base image with Node.js
-FROM node:18-alpine AS base
+# Base image with Node.js LTS
+FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat git
+# Install pnpm globally
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Install dependencies
 FROM base AS deps
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json* ./
+COPY package.json pnpm-lock.yaml* ./
 
 # Install dependencies
 RUN \
-  if [ -f package-lock.json ]; then npm ci; \
-  else echo "Warning: package-lock.json not found, running npm install" && npm install; \
+  if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile; \
+  else echo "Warning: pnpm-lock.yaml not found, running pnpm install" && pnpm install; \
   fi
 
 # Build TinaCMS and Next.js application
@@ -36,7 +38,7 @@ ENV NODE_ENV=production
 # The build command will:
 # 1. Run 'tinacms build --partial-reindex' to generate TinaCMS files
 # 2. Run 'next build' to build the Next.js app
-RUN npm run build
+RUN pnpm run build
 
 # Production image
 FROM base AS runner
